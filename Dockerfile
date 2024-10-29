@@ -1,19 +1,9 @@
-FROM ubuntu:latest AS build
-
-RUN apt update
-RUN apt install openjdk-21-jdk -y
+FROM gradle:latest AS BUILD
+WORKDIR /usr/app/
 COPY . .
-
-RUN apt install snapd -y
-RUN systemctl start snapd
-RUN snap install gradle --classic
-
-RUN ./gradlew clean build
+RUN gradle build
 
 FROM openjdk:21-jdk-slim
-
+COPY --from=BUILD /usr/app .
 EXPOSE 8080
-
-COPY --from=build build/libs/oauth_exemplo-0.0.1-SNAPSHOT.jar app.jar
-
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT exec java -jar /usr/app/build/libs/app.jar
