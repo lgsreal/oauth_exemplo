@@ -5,6 +5,7 @@ RUN apt install openjdk-21-jdk -y
 COPY . .
 
 RUN apt install snapd -y
+RUN systemctl start snapd
 RUN snap install gradle --classic
 
 RUN ./gradlew clean build
