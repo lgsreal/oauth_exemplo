@@ -6,4 +6,4 @@ RUN gradle build
 FROM openjdk:21-jdk-slim
 COPY --from=BUILD /usr/app .
 EXPOSE 8080
-ENTRYPOINT exec java -jar /usr/app/build/libs/app.jar
+ENTRYPOINT exec java -jar app.jar
